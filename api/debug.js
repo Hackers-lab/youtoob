@@ -29,6 +29,7 @@ module.exports = async (req, res) => {
     const t1 = Date.now();
     const stream = await getAudioStream(song.videoId);
     report.stream = {
+      clientUsed: stream.clientUsed,
       mimeType: stream.mimeType,
       streamUrlSample: stream.url ? stream.url.slice(0, 90) : null
     };
