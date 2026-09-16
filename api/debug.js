@@ -1,11 +1,23 @@
-const { searchSong, getAudioStream } = require('../lib/youtube');
+const { searchSong, getAudioStream, getYoutubeCookie, sanitizeCookie } = require('../lib/youtube');
 
 module.exports = async (req, res) => {
   const q = req.query.q || 'tare zameen par';
+  const rawCookie = getYoutubeCookie();
+  const sanitized = sanitizeCookie(rawCookie);
+
+  const matchedTokens = sanitized
+    ? sanitized.split(';').map(p => p.trim().split('=')[0]).filter(Boolean)
+    : [];
+
+  const envKeysFound = Object.keys(process.env).filter(k => k.includes('YOUTUBE'));
+
   const report = {
     query: q,
-    hasCookieConfigured: !!process.env.YOUTUBE_COOKIE,
-    cookieLength: process.env.YOUTUBE_COOKIE ? process.env.YOUTUBE_COOKIE.length : 0
+    hasCookieConfigured: !!rawCookie,
+    cookieRawLength: rawCookie ? rawCookie.length : 0,
+    matchedTokensCount: matchedTokens.length,
+    matchedTokens: matchedTokens,
+    detectedEnvKeys: envKeysFound
   };
 
   try {
