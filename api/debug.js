@@ -1,31 +1,24 @@
-const { searchSong, getAudioStream } = require('../lib/youtube');
-
 module.exports = async (req, res) => {
-  const q = req.query.q || 'tare zameen par';
+  const info = {};
   try {
-    const t0 = Date.now();
-    const song = await searchSong(q);
-    const searchTime = Date.now() - t0;
-
-    const t1 = Date.now();
-    const stream = await getAudioStream(song.videoId);
-    const streamTime = Date.now() - t1;
-
-    return res.status(200).json({
-      success: true,
-      query: q,
-      timing: { searchMs: searchTime, streamMs: streamTime, totalMs: Date.now() - t0 },
-      song,
-      stream: {
-        mimeType: stream.mimeType,
-        urlPrefix: stream.url ? stream.url.slice(0, 90) : null
-      }
-    });
+    info.nodeVersion = process.version;
+    info.envTmp = require('os').tmpdir();
+    
+    try {
+      info.importingYoutube = 'starting';
+      const yt = require('../lib/youtube');
+      info.importingYoutube = 'success';
+      
+      const q = req.query.q || 'tare zameen par';
+      info.song = await yt.searchSong(q);
+      info.stream = await yt.getAudioStream(info.song.videoId);
+      return res.status(200).json({ success: true, info });
+    } catch (importErr) {
+      info.importError = importErr.message;
+      info.stack = importErr.stack;
+      return res.status(200).json({ success: false, error: 'Module Error', info });
+    }
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err.message,
-      stack: err.stack
-    });
+    return res.status(500).json({ error: err.message, stack: err.stack });
   }
 };
