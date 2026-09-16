@@ -1,20 +1,25 @@
-const yt = require('../lib/youtube');
-
 module.exports = async (req, res) => {
   try {
     const { Innertube, ClientType } = await import('youtubei.js');
-    const instance = await Innertube.create({ client_type: ClientType.IOS });
-    const info = await instance.getBasicInfo('kaMB6Rw8XzA');
-    const formats = info.streaming_data?.adaptive_formats || [];
-    const regularFormats = info.streaming_data?.formats || [];
-    
-    return res.json({
-      adaptiveCount: formats.length,
-      adaptive: formats.map(f => ({ mime: f.mime_type, hasUrl: !!f.url, cipher: !!f.signature_cipher })),
-      regularCount: regularFormats.length,
-      regular: regularFormats.map(f => ({ mime: f.mime_type, hasUrl: !!f.url }))
-    });
+    const clients = [ClientType.ANDROID, ClientType.TV_EMBEDDED, ClientType.WEB, ClientType.MWEB, ClientType.ANDROID_MUSIC];
+    const report = {};
+
+    for (const c of clients) {
+      try {
+        const yt = await Innertube.create({ client_type: c });
+        const info = await yt.getBasicInfo('kaMB6Rw8XzA');
+        report[c] = {
+          playability: info.playability_status?.status,
+          reason: info.playability_status?.reason,
+          adaptive: info.streaming_data?.adaptive_formats?.length || 0,
+          regular: info.streaming_data?.formats?.length || 0
+        };
+      } catch (e) {
+        report[c] = { error: e.message };
+      }
+    }
+    return res.json(report);
   } catch (err) {
-    return res.status(500).json({ error: err.message, stack: err.stack });
+    return res.status(500).json({ error: err.message });
   }
 };
