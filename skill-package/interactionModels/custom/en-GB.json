@@ -1,0 +1,64 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "youtoob music",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": [
+            "pause",
+            "pause music",
+            "pause playback"
+          ]
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": [
+            "resume",
+            "resume music",
+            "continue",
+            "continue playback"
+          ]
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "PlaySongIntent",
+          "slots": [
+            {
+              "name": "songQuery",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "play {songQuery}",
+            "play song {songQuery}",
+            "play the song {songQuery}",
+            "play the track {songQuery}",
+            "play music by {songQuery}",
+            "stream {songQuery}",
+            "search and play {songQuery}",
+            "put on {songQuery}",
+            "listen to {songQuery}",
+            "{songQuery}"
+          ]
+        }
+      ],
+      "types": []
+    }
+  }
+}
