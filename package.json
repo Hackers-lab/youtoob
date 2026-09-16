@@ -1,0 +1,17 @@
+{
+  "name": "youtoob-music-alexa-skill",
+  "version": "1.0.0",
+  "description": "Alexa Skill for playing YouTube / YouTube Music streams on Echo devices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ask-sdk-core": "^2.14.0",
+    "ask-sdk-model": "^1.86.0",
+    "yt-search": "^2.13.1"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "name": "YouToob Music",
+          "summary": "Stream music and audio from YouTube to your Echo device",
+          "description": "Stream audio directly from YouTube to your Echo device using voice commands.",
+          "examplePhrases": [
+            "Alexa, open YouToob Music",
+            "Alexa, ask YouToob Music to play Starboy",
+            "Alexa, ask YouToob Music to play Believer"
+          ]
+        }
+      },
+      "category": "STREAMING_SERVICE",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "interfaces": [
+          {
+            "type": "AUDIO_PLAYER"
+          }
+        ]
+      }
+    }
+  }
+}
